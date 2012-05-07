@@ -385,16 +385,11 @@ see also `spice-simulator'."
 (defcustom spice-waveform-viewer-alist
   '(
     ;; Nutmeg; nutmeg <waveformdata.dat> 
-    ;; 
     ("Nutmeg"  "nutmeg" "" spice-run-interactive (".dat" ".ac0" ".tr0")) ; spice3 nutmeg viewer
     ("Gwave"   "gwave"  "" spice-run-silent 
      (".raw" ".braw" ".ac0" ".tr0" ".sw0" ".W" ".N" ".acs")) ; gwave viewer
     ("Xelga"   "xelga"  "" spice-run-silent ".cou") ; xelga eldo viewer
-    ("Awaves"  "awaves_emacs" "" spice-run-silent (".ac0" ".tr0")) ; awaves hspice viewer, this doesn't work yet and will it ever ? Explanation: awaves is a script that starts an executable/binary in the background. This means the shell starting awaves ends immediately after the forking of the executable; after which all backgrounded programs get killed by emacs since their parent's parent shell (/bin/sh) ends. awaves shouldn't return immediately and then this will work; that's why I called the program awaves_emacs...
-
-;;     ("Awaves2" "echo_awaves"  "" spice-run-silent nil) ; awaves hspice viewer
     ;;; Add your local waveform viewers here:
-    ;; 
     )
   "*List of available Waveform viewers and their properties.
 Each list entry specifies the following items for a waveform viewer:

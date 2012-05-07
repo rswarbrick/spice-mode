@@ -97,7 +97,6 @@
 ;; 	      (list 
 ;; 	       (list "My Header"    "MY HEADER"    nil)
 ;; 	       )))
-;;  '(spice-show-describe-mode nil)         ;; don't describe mode at startup
 ;;  )
 
 ;; This can also be achieved interactively through customizations !
@@ -228,12 +227,6 @@ Additional standards:
   :set (lambda (variable value)
          (spice-custom-set variable value
 			   'spice-update-existing-buffers))
-  :type 'boolean)
-
-;;;###autoload
-(defcustom spice-show-describe-mode nil ; was t
-  "*Spice mode runs `describe-mode' once at start of spice-mode"
-  :group 'spice
   :type 'boolean)
 
 ;;;###autoload
@@ -8537,15 +8530,9 @@ Key bindings for other parts in the file:
        (not spice-msb-fixed) ;; haven't yet added spice decks category ?
        (spice-msb-fix)) ;; add category
 
-  ;; open describe window, hope this doesn't annoy people too much...
-  (if spice-show-describe-mode
-      (save-excursion
-	(describe-mode) ;; aha...
-	(setq spice-show-describe-mode nil)) ;; but only once in a session !!
-    )
   (if spice-echo-intro
-	  (message "Spice mode %s.  Type C-h m for documentation." ;; always
-			 spice-version))
+      (message "Spice mode %s.  Type C-h m for documentation." ;; always
+               spice-version))
 
   ;; run spice-mode hooks
   (run-hooks 'spice-mode-hook)

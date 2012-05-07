@@ -184,7 +184,7 @@ bound) afterwards."
 
 
 ;;;###autoload
-(defcustom spice-standard '(spice2g6 (hspice eldo eldorf eldovloga fasthenry)) ; "layla" has been removed
+(defcustom spice-standard '(spice2g6 (hspice eldo eldorf eldovloga fasthenry))
   "*Spice standards used.
 Basic standard:
   Spice2g6    : Original Berkeley Spice (leave this always on!)

@@ -97,7 +97,6 @@
 ;; 	      (list 
 ;; 	       (list "My Header"    "MY HEADER"    nil)
 ;; 	       )))
-;;  '(spice-use-func-menu t)                          ;; use func-menu (XEmacs)
 ;;  '(spice-show-describe-mode nil)         ;; don't describe mode at startup
 ;;  )
 
@@ -230,15 +229,6 @@ Additional standards:
          (spice-custom-set variable value
 			   'spice-update-existing-buffers))
   :type 'boolean)
-
-;;;###autoload
-(defcustom spice-use-func-menu nil
-  "*Spice func menu setting (untested), comparable to imenu"
-  :group 'spice
-  :set (lambda (variable value)
-         (spice-custom-set variable value
-			   'spice-update-existing-buffers))
-  :type  'boolean)
 
 ;;;###autoload
 (defcustom spice-show-describe-mode nil ; was t
@@ -8174,9 +8164,6 @@ variables of the customization buffer."
   (set-syntax-table spice-mode-syntax-table)
   (spice-keywords-init)
   (spice-font-lock-init)
-  (if spice-use-func-menu
-      (if (fboundp 'function-menu)
-	  (funcall 'spice-func-menu-init)))
   (spice-imenu-init)
   (if (not (spice-output-p))
       (setq imenu-generic-expression spice-imenu-generic-expression))
@@ -8502,11 +8489,6 @@ Key bindings for other parts in the file:
     
     ;; add speedbar (global, can be moved ?)
     (spice-speedbar-init)
-    
-    ;; func-menu stuff, all buffer local  
-    (if spice-use-func-menu
-	(if (fboundp 'function-menu)
-	    (funcall 'spice-func-menu-init)))
     
     ;;------------------------------------------------------------
     ;; now hook in 'spice-colorize-libraries (eldo-mode.el)

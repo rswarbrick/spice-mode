@@ -8531,7 +8531,7 @@ Key bindings for other parts in the file:
        (spice-msb-fix)) ;; add category
 
   (if spice-echo-intro
-      (message "Spice mode %s.  Type C-h m for documentation." ;; always
+      (message "Spice mode %s.  Type C-h m for documentation."
                spice-version))
 
   ;; run spice-mode hooks

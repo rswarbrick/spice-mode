@@ -1625,28 +1625,6 @@ This does highlighting of keywords and standard identifiers.")
 	  (setq pos (search-forward ":" limit 'end)))))
     found))
 
-;; these are try outs to solve the font-locking of problematic xinstances:
-
-(defun spice-match-xinstances-dummy (limit)
-  "match xinstances"
-  (let (min max pt)
-    (setq pt (point))
-    (goto-char (point-min))
-    (setq min (point))
-    (goto-char (point-max))
-    (setq max (point))
-    (save-excursion
-      (set-buffer (get-buffer-create "*Matcher*"))
-      (goto-char (point-max))
-      (insert (format "Point min is %s\n" min))
-      (insert (format "Current point is %s\n" pt))
-      (insert (format "Limit is %s\n" limit))
-      (insert (format "Point max is %s\n" max))
-      )
-    )
-  nil
-  )
-
 (defun spice-idle-font-lock (beg end)
   "runs font-lock on a region"
   (message "rerunning font-lock on %s:%s=%s" beg end (buffer-substring beg end))
@@ -2175,13 +2153,14 @@ Doc comments (starting with '!') are unaffected."
       "fallback version of set-extent-keymap (for emacs 2[01])"
       (set-extent-property extent 'local-map keymap))))
 
+(defun spice-font-lock-fontify-region (beginning end &optional verbose)
+  (font-lock-default-fontify-region beginning end verbose)
+  (message "Colorizing spice libraries...")
+  (spice-colorize-libraries beginning end nil))
 
-(defun spice-colorize-libraries (beg end old-len)
+(defun spice-colorize-libraries (beg end &optional ignored)
   "This function colorises libraries and included files when the mouse
-passes over them. Clicking on the middle-mouse button loads them in a buffer.
-BEWARE, this feature was hard to implement, and contains (non-fatal) bugs,
-primarily because emacs 20 does not have the same support for this as xemacs
-has."
+passes over them. Clicking on the middle-mouse button loads them in a buffer."
   (save-excursion
     (save-match-data
       (let (end-point)
@@ -2214,21 +2193,9 @@ has."
 		  (set-extent-property extent 'mouse-face 'highlight)
 		  (set-extent-keymap extent spice-mode-mouse-map)))))))))
 
-
 (defun spice-colorize-libraries-buffer ()
   (interactive)
-  ;; (message "running colorize libraries buffer")
-  ;; delete overlays
-  (let ((overlays (overlays-in (point-min) (point-max))))
-    (while overlays
-      (if (and
-	   (overlay-get (car overlays) 'detachable)
-	   (overlay-get (car overlays) 'spice-library))
-	  (delete-overlay (car overlays)))
-      (setq overlays (cdr overlays)))) ; let
-  ;; remake overlays
   (spice-colorize-libraries (point-min) (point-max) nil))
-
 
 ;; ffap needs wrapper to detect end of buffer condition
 (defun spice-load-file-at-point ()
@@ -2237,7 +2204,6 @@ has."
   (if (looking-at "\\'")
       (newline) ;; assumes \r is bound to load file...
     (ffap)))
-
 
 ;; ffap-at-mouse isn't available in xemacs < 21
 ;; so define this function to do more or less the same (primarily 
@@ -6246,19 +6212,19 @@ uses cache generated with the `spice-cache-section-p' function."
 
 (defmacro spice-layla-function-template (name type)
   "Create a layla tempo define for name and type"
-  (` (let (p_prompt)
-       (setq p_prompt (concat "[Name of " (, name) "]: "))
-       (tempo-define-template 
-	(concat "layla-" (, name) "-" (, type))
-	(list (concat "." (, name) "_" (, type) "_param(")
-	   (list 'p p_prompt) ", "
-	   '(p "[Name of parameter]: ") ", "
-	   '(p "[Value of parameter]: ") ")"
-	   'n)
-	(concat "layla-" (, name) "-" (, type))
-	(concat "template for inserting a " (, type) " parameter for a Layla "
-		(, name))
-	'spice-tempo-tags))))
+  `(let (p_prompt)
+      (setq p_prompt (concat "[Name of " ,name "]: "))
+      (tempo-define-template 
+       (concat "layla-" ,name "-" ,type)
+       (list (concat "." ,name "_" ,type "_param(")
+             (list 'p p_prompt) ", "
+             '(p "[Name of parameter]: ") ", "
+             '(p "[Value of parameter]: ") ")"
+             'n)
+       (concat "layla-" ,name "-" ,type)
+       (concat "template for inserting a " ,type " parameter for a Layla "
+               ,name)
+       'spice-tempo-tags)))
 
 (spice-layla-function-template "bus" "double")
 (spice-layla-function-template "bus" "integer")
@@ -7082,7 +7048,6 @@ uses cache generated with the `spice-cache-section-p' function."
 	  regexp-alist))
   )
 
-
 (defun spice-compile-init ()
   "Initialize for simulation(/compilation)."
 
@@ -7091,17 +7056,10 @@ uses cache generated with the `spice-cache-section-p' function."
   (make-local-variable  'compile-command)
   (make-local-variable  'compilation-read-command)
   (make-local-variable  'compilation-buffer-name-function)
-  (make-local-variable  'compilation-error-regexp-alist)
-  (make-local-variable  'compilation-file-regexp-alist)
 
   (setq compilation-read-command 't)
   (setq compilation-buffer-name-function 
-	'spice-simulation-buffer-name-function)
-
-  ; (message "setting compilation error regexps command")
-  (setq compilation-error-regexp-alist spice-compilation-error-regexp-alist
-	compilation-file-regexp-alist spice-compilation-file-regexp-alist)
-  )
+	'spice-simulation-buffer-name-function))
 
 
 (defvar spice-column 1
@@ -7119,11 +7077,6 @@ the errors in the simulation buffer with compile.el")
 
 
 (defun spice-linenum (f c)
-  ;(message (format "calling linenum fun '%s'" f))
-  (save-excursion
-    (set-buffer compilation-last-buffer)
-    ;(message (format "buffer '%s'" (buffer-name)))
-    )
   (list (point-marker) f 1 (if (= spice-column 1)
 			       (setq spice-column 2)
 			     (setq spice-column 1))))
@@ -7288,7 +7241,6 @@ is t, the filename itself is returned unmodified."
     (set-buffer (get-buffer-create "*spice silent*"))
     (erase-buffer)
     (if dir (cd dir))
-;    (message "cd to %s" dir)
     (let ((process (start-process (concat name " silent")
 				  (current-buffer)  ; can be nil 
 				  spice-shell
@@ -7297,7 +7249,7 @@ is t, the filename itself is returned unmodified."
       (message "started %s" command)
       (if spice-after-start-process-function
 	  (funcall spice-after-start-process-function process))
-      (process-kill-without-query process))))
+      (set-process-query-on-exit-flag process nil))))
 
 (defun spice-run-interactive (name command file)
   "Run waveform viewer interactively.
@@ -7458,70 +7410,6 @@ that has been selected."
   (spice-add-changelog-entry "File created") ; in any case
   )
 
-
-
-;;------------------------------------------------------------ 
-;; Hacks to implement the find function menu bar for spice-mode
-;; subckts/models Fortunately spice-mode only provides one means of
-;; abstraction so the parsing is very easy.  (only available in
-;; XEmacs, remove this and spice-mode entry when compiling for emacs
-;; to avoid warnings) This code has been taken from eldo-mode.el
-;; (E. Rouat)
-;;------------------------------------------------------------
-
-(eval-and-compile
-  (when (fboundp 'function-menu)
-    (require 'func-menu)
-    
-    (defconst fume-function-name-regexp-spice
-      "^\\.\\(subckt\\|model\\|macro\\)\\s-+\\([a-z]\\w*\\)"
-      "Expression to parse Spice subcircuit and model names.")
-    
-    (defun fume-find-next-spice-function-name (buffer)
-      "Searches for the next spice subcircuit name in BUFFER."
-      (set-buffer buffer)
-      (setq case-fold-search 't)		;;otherwise func-menu bombs....
-      (if (re-search-forward fume-function-name-regexp nil t)
-	  (let ((beg (match-beginning 2))
-		(end (match-end 2)))
-	    (cons (buffer-substring beg end) beg))))
-    ) ; when
-  )
-
-
-(defun spice-func-menu-init ()
-  "Initialize function menu." ; buffer local stuff
-  ;; hook in the spice-mode mode regular expression above into the
-  ;; association list of regexps used by the function menu generator
-  (setq fume-function-name-regexp-alist
-	(purecopy
-	 (append
-	  fume-function-name-regexp-alist
-	  (list
-	   '(spice-mode . fume-function-name-regexp-spice)))))
-  
-  ;; hook in the search method above into the association list used by the
-  ;; function menu generating code
-  (setq fume-find-function-name-method-alist
-	(purecopy
-	 (append
-	  fume-find-function-name-method-alist
-	  (list '(spice-mode . fume-find-next-spice-function-name)))))
-  
-  ;; Now activate func-menu - I hope that these settings don't
-  ;; interfere with users settings   
-  (make-local-variable 'fume-menubar-menu-name)
-  (make-local-variable 'fume-buffer-name)
-  (make-local-variable 'fume-index-method)
-  (setq fume-menubar-menu-name "Subckts"
-	fume-buffer-name "*Subcircuits List*"
-	fume-index-method 2)
-  (make-local-hook 'find-file-hooks)
-  (add-hook 'find-file-hooks 'fume-add-menubar-entry)   
-  (define-key global-map '(shift button2) 'fume-mouse-function-goto)
-  (fume-add-menubar-entry))
-
-
 ;; ======================================================================
 ;; Support for .subckt search !?
 ;; ======================================================================
@@ -7563,17 +7451,15 @@ subcircuit searches.")
 (defun spice-search-file-for-subckt (filename subckt)
   "Searches a file for a .subckt definition. Remembers
 `spice-subckt-search-master-filename' for future subckt searches."
-  (save-excursion
-    (set-buffer (find-file-noselect filename))
+  (with-current-buffer (find-file-noselect filename)
     (condition-case nil
 	(let ((index-alist (imenu--make-index-alist t))
 	      (mrk nil))
 	  (if (assoc spice-imenu-end-submenu-name index-alist)
 	      (setq spice-subckt-search-master-filename buffer-file-name))
-	  (setq mrk (assoc-ignore-case subckt index-alist))
+	  (setq mrk (assoc-string subckt index-alist t))
 	  (if mrk mrk
-	    (spice-search-included-files subckt))
-	  )
+	    (spice-search-included-files subckt)))
       (error nil))))
 
 
@@ -7682,10 +7568,7 @@ only guaranteed to work when all included files are not already loaded."
 			    (lambda (buffer)
 			      (cons (buffer-file-name buffer) buffer))
 			    (buffer-list)))))
-	      (save-excursion
-		;; (message "filename is %s" filename)
-		(set-buffer (find-file-noselect filename))
-		;; (spice-mode) ? ref. discussion Manu
+	      (with-current-buffer (find-file-noselect filename)
 		(unless (or non-recursive
 			    (not (eq major-mode 'spice-mode)))
 		    (spice-load-include-files))))
@@ -7907,11 +7790,13 @@ is nil then the text is shown, while if FLAG is t the text is hidden."
   (easy-menu-define spice-output-menu spice-output-mode-map
     "Menu keymap for Spice Output Mode." spice-output-menu-list)
 
-  ;; font-lock local start-up
+  ;; font-lock local start-up. The "NIL T" bit means not keywords only and yes
+  ;; to case folding. The cons cell says that quotes are considered part of
+  ;; words. The final NIL is the SYNTAX-BEGIN parameter (recommended NIL).
   (set (make-local-variable 'font-lock-defaults)
-       (list 'spice-output-font-lock-keywords 
-	     nil t (list (cons ?\" "w")))) ; nil, t (do multiline
-					   ; comments)
+       `(spice-output-font-lock-keywords
+         nil t `((?\" . "w")) nil
+         (font-lock-fontify-region-function . spice-font-lock-fontify-region)))
   
   ;; imenu buffer local init
   (set (make-local-variable 'imenu-case-fold-search) t)
@@ -7921,9 +7806,7 @@ is nil then the text is shown, while if FLAG is t the text is hidden."
 		   1)
 	     (list nil ;; "*Sections*"
 		   spice-output-sections-regexp 
-		   2)))
-  )
-
+		   2))))
 
 (defun spice-output-filename ()
   "Determines output filename of current spice deck."
@@ -8149,16 +8032,17 @@ returns it. Non-comment paragraphs can also be filled correctly."
 (defun spice-msb-fix ()
   "Adds \"Spice Decks\" entry in msb menu, assumes that msb is already loaded"
   (setq spice-msb-fixed t)
-  (let* ((l (length msb-menu-cond))
-         (last (nth (1- l) msb-menu-cond))
-         (precdr (nthcdr (- l 2) msb-menu-cond)) ; cdr of this is last
-         (handle (1- (nth 1 last))))
-    (setcdr precdr (list
-                    (list
-                     '(eq major-mode 'spice-mode)
-                     handle
-                     "Spice Decks (%d)")
-                    last))))
+  (when (boundp 'msb-menu-cond)
+    (let* ((l (length msb-menu-cond))
+           (last (nth (1- l) msb-menu-cond))
+           (precdr (nthcdr (- l 2) msb-menu-cond)) ; cdr of this is last
+           (handle (1- (nth 1 last))))
+      (setcdr precdr (list
+                      (list
+                       '(eq major-mode 'spice-mode)
+                       handle
+                       "Spice Decks (%d)")
+                      last)))))
 
 
 ;; ======================================================================
@@ -8263,9 +8147,6 @@ returns it. Non-comment paragraphs can also be filled correctly."
   (set-spice-name)
   (spice-update-mode-menu)
   (set-syntax-table spice-mode-syntax-table)
-  (if spice-use-func-menu
-      (if (fboundp 'function-menu)
-	  (funcall 'spice-func-menu-init)))
   (if (not (spice-output-p))
       (setq imenu-generic-expression spice-imenu-generic-expression))
   (when spice-imenu-add-to-menubar
@@ -8640,12 +8521,18 @@ Key bindings for other parts in the file:
     ;; now hook in 'spice-colorize-libraries (eldo-mode.el)
     ;; all buffer local:
     ;;(make-local-hook 'font-lock-mode-hook)
-    (make-local-hook 'font-lock-after-fontify-buffer-hook); doesn't exist in emacs 20
-    ;;(add-hook 'font-lock-mode-hook 'spice-colorize-libraries-buffer t t)
-    (add-hook 'font-lock-after-fontify-buffer-hook 'spice-colorize-libraries-buffer t t) ; not in emacs 20
-    (make-local-hook 'after-change-functions)
-    (add-hook 'after-change-functions 'spice-colorize-libraries t t)
-    (spice-colorize-libraries-buffer)
+
+    ;; This possibly works on XEmacs? It definitely doesn't work on Emacs 23.
+    (when (and (fboundp 'make-local-hook)
+               (boundp 'font-lock-after-fontify-buffer-hook))
+      (make-local-hook 'font-lock-after-fontify-buffer-hook)
+      (add-hook 'font-lock-after-fontify-buffer-hook
+                'spice-colorize-libraries-buffer t t)
+
+      ;; I'm only doing this on XEmacs since I think the fontify-based solution
+      ;; should work fine on Emacs.
+      (make-local-hook 'after-change-functions)
+      (add-hook 'after-change-functions 'spice-colorize-libraries t t))
 
     ;;------------------------------------------------------------
     ;; compile buffer local init
@@ -8674,7 +8561,6 @@ Key bindings for other parts in the file:
   ;; msb fix, run only once
   (and (featurep 'msb) ;; have we got this feature ?
        msb-mode ;; is it on ?
-       (boundp 'msb-menu-cond) ;; still using msb-menu-cond ?
        (not spice-msb-fixed) ;; haven't yet added spice decks category ?
        (spice-msb-fix)) ;; add category
 

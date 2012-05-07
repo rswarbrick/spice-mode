@@ -146,12 +146,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defconst spice-version "1.2.25 (03 Jan 2007)"
+(defconst spice-version "1.2.x (2012)"
   "Current version of spice mode (spice2g6/spice3/hspice/eldo(rf&verilog-a)/fasthenry/layla/mondriaan/draccdl/spectre).")
-
-(defconst spice-developer 
-  "Geert Van der Plas & Emmanuel Rouat (<geert_vanderplas@email.com>, <emmanuel.rouat@wanadoo.fr>)"
-  "Current developers/maintainers of spice-mode.")
 
 (defvar spice-running-xemacs (string-match "XEmacs" emacs-version)
   "A variable that tells us whether we're in Xemacs or not")
@@ -8051,7 +8047,7 @@ returns it. Non-comment paragraphs can also be filled correctly."
 (defun spice-about ()
   (interactive)
   (sit-for 0)
-  (message "spice-mode version %s, © %s" spice-version spice-developer))
+  (message "spice-mode version %s" spice-version))
 
 (defun set-spice-name ()
   "Set mode line name of spice mode"

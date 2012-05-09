@@ -39,6 +39,10 @@ Getting Started
 * Introduction::                What is SPICE mode?
 * Installation::                How do I install it?
 
+Using SPICE mode
+
+* File structure::              Using SPICE mode to navigate
+
 Customisation
 
 * Flavours of SPICE::           What are you running?
@@ -52,17 +56,20 @@ Customisation
 @comment Top-level chapters
 
 @node Getting Started, Using SPICE mode, Top, Top
+@chapter Getting Started
 @menu
 * Introduction::                What is SPICE mode?
 * Installation::                How do I install it?
 @end menu
 
 @node Using SPICE mode, Customisation, Getting Started, Top
-
-How to use it?
-
+@chapter Using SPICE mode
+@menu
+* File structure::              Using SPICE mode to navigate
+@end menu
 
 @node Customisation, Index, Using SPICE mode, Top
+@chapter Customisation
 @menu
 * Flavours of SPICE::           What are you running?
 * New Files::                   Inserting boilerplate
@@ -73,7 +80,7 @@ How to use it?
 @comment The actual contents of the document
 
 @node Introduction, Installation, Getting Started, Getting Started
-@chapter Introduction
+@section Introduction
 @cindex Introduction
 @c
 This manual describes @file{spice-mode.el}, an elisp library that
@@ -87,7 +94,7 @@ rather strange) is British. As such, there's a weird mix of British and
 American spelling in the manual. Sorry.
 
 @node Installation, , Introduction, Getting Started
-@chapter Installation
+@section Installation
 @cindex Installation
 @c
 To install spice-mode.el, there are three (simple!) things you need to
@@ -158,8 +165,26 @@ name of the installed @file{spice-mode.el}. After doing so, the
 @code{locate-library} test above should return a string ending in
 @code{"spice-mode.elc"}.
 
+@node File structure, , Using SPICE mode, Using SPICE mode
+@section File structure
+@cindex imenu
+@cindex navigating through a SPICE file
+
+SPICE mode can understand some of the actual structure of a SPICE
+file. In particular, it can spot model definitions (using @code{.model})
+along with subcircuit definitions and inclusions of other libraries. To
+make this useful, we use the Emacs imenu facility
+(@pxref{Imenu, , Imenu, Emacs, The Emacs Manual},).
+
+@cindex spice-imenu-add-to-menubar
+You can get to a part of the file with @kbd{M-x imenu} and then
+following the prompts. Of course, that's not particularly convenient to
+use. As such, if @code{spice-imenu-add-to-menubar} is true then an extra
+menu is added to the menu called @code{Index}, which you can use to find
+things.
+
 @node Flavours of SPICE, New Files, Customisation, Customisation
-@chapter Flavours of SPICE
+@section Flavours of SPICE
 @cindex SPICE standards
 @cindex implementations
 
@@ -172,7 +197,7 @@ Berkeley SPICE syntax and then optionally: Hspice, Eldo, EldoRf,
 EldoVlogA, FastHenry, LAYLA, MONDRIAAN, DracCDL and Spectre.
 
 @node New Files, Advanced customisation, Flavours of SPICE, Customisation
-@chapter New Files
+@section New Files
 @cindex new files
 @cindex boilerplate, inserting
 @cindex automatically inserting boilerplate
@@ -195,7 +220,7 @@ generic boilerplate which takes into account which of the SPICE
 standards is configured.
 
 @node Advanced customisation, , New Files, Customisation
-@chapter Advanced customisation
+@section Advanced customisation
 @cindex advanced customisation
 
 @cindex mode hooks

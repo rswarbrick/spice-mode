@@ -6803,92 +6803,46 @@ uses cache generated with the `spice-cache-section-p' function."
 
 (require 'imenu)
 
-(defvar spice-imenu-generic-expression nil
-  "Imenu generic expression for spice mode. See `imenu-generic-expression'.")
-
 (defconst spice-imenu-end-submenu-name "*End*"
-  "label of End submenu in imenu")
+  "Label of End submenu in imenu")
 
 (defconst spice-imenu-libraries-submenu-name "*Libraries*"
-  "label of Libraries submenu in imenu")
+  "Label of Libraries submenu in imenu")
 
-(defun spice-imenu-init ()
+(defun spice-make-imenu-generic-expression ()
   "initialize imenu generic expression and pass to imenu"
-  (setq spice-imenu-generic-expression
-	(append 
-	 (list
-	  (list spice-imenu-end-submenu-name
-		(concat
-		 "^"
-		 "\\.\\(end\\)\\>"
-		 ) 1))
-	 (when (spice-standard-p 'layla)
-	   (list 
-	    (list "*Nets*"  (concat
-			     "^\\*?"
-			     "[\.]\\(net\\)\\s-+"
-			     "\\([a-z0-9]\\w*\\)\\>"
-			     ) 2)
-	    (list "*Ports*"
-		  (concat
-		   "^\\*?"
-		   "\\.\\(port\\)\\s-+"
-		   "\\([a-z0-9]\\w*\\)\\>"
-		   ) 2)
-	    (list "*Performances*"
-		  (concat
-		   "^\\*?"
-		   "\\.\\(performance\\)\\s-+"
-		   "\\([a-z]\\w*\\)\\>"
-		   ) 2)) ; list
-	   )
-	 (list
-	  (list
-	   "*Misc*"  
-	   (concat 
-	    "^\\s-*\\.model\\s-+" spice-model-name spice-line-break 
-	    "\\s-+\\("
-	    (regexp-opt spice-misc-model-type-names)  
-	    "\\)\\>" )
-	   1)
-	  (list
-	   "*Diodes*"
-	   (concat "^\\s-*\\.model\\s-+" spice-model-name
-		   spice-line-break "\\s-+d\\>")  
-	   1)
-	  (list
-	   "*Bipolars*"  
-	   (concat "^\\s-*\\.model\\s-+" spice-model-name
-		   spice-line-break "\\s-+\\(npn\\|pnp\\)\\>")  
-	   1)
-	  (list
-	   "*Mosfets*"  
-	   (concat "^\\s-*\\.model\\s-+" spice-model-name
-		   spice-line-break "\\s-+\\(n\\|p\\)mos\\>")  
-	   1)
-	  (list spice-imenu-libraries-submenu-name
-		(concat spice-library-regexp-start 
-			spice-library-regexp-end)
-		3)
-	  (list
-	   "*Analyses*"  
-	   (concat "^\\s-*\\.\\(" 
-		   (regexp-opt spice-analyses) 
-		   "\\)\\>")
-	   1)
-	  (list "*Sections*"
-		spice-section-headings-regexp 2)
-	  (list nil
-		(concat
-		 "^\\.\\(subckt\\s-+" 
-		 (when (spice-standard-p 'eldo)
-		   "\\(lib\\s-+[^ \t\n]+\\s-+\\)?")
-		 "\\|macro\\s-+\\)"
-		 "\\([a-z]\\w*\\)\\>"
-		 ) (if (spice-standard-p 'eldo) 3 2))
-	  )
-	 )))
-
+  `((,spice-imenu-end-submenu-name "^\\.\\(end\\)\\>" 1)
+    ,@(when (spice-standard-p 'layla)
+        '(("*Nets*" "^\\*?[\.]\\(net\\)\\s-+\\([a-z0-9]\\w*\\)\\>" 2)
+          ("*Ports*" "^\\*?\\.\\(port\\)\\s-+\\([a-z0-9]\\w*\\)\\>" 2)
+          ("*Performances*"
+           "^\\*?\\.\\(performance\\)\\s-+\\([a-z]\\w*\\)\\>" 2)))
+    ("*Misc*"  
+     ,(concat
+       "^\\s-*\\.model\\s-+" spice-model-name spice-line-break 
+       "\\s-+\\(" (regexp-opt spice-misc-model-type-names) "\\)\\>")
+     1)
+    ("*Diodes*"
+     ,(concat "^\\s-*\\.model\\s-+" spice-model-name
+              spice-line-break "\\s-+d\\>") 1)
+    ("*Bipolars*"  
+     ,(concat "^\\s-*\\.model\\s-+" spice-model-name
+              spice-line-break "\\s-+\\(npn\\|pnp\\)\\>") 1)
+    ("*Mosfets*"  
+     ,(concat "^\\s-*\\.model\\s-+" spice-model-name
+              spice-line-break "\\s-+\\(n\\|p\\)mos\\>") 1)
+    (,spice-imenu-libraries-submenu-name
+     ,(concat spice-library-regexp-start spice-library-regexp-end) 3)
+    ("*Analyses*"  
+     ,(concat "^\\s-*\\.\\(" (regexp-opt spice-analyses) "\\)\\>") 1)
+    ("*Sections*" ,spice-section-headings-regexp 2)
+    (nil
+     ,(concat "^\\.\\(subckt\\s-+" 
+              (when (spice-standard-p 'eldo)
+                "\\(lib\\s-+[^ \t\n]+\\s-+\\)?")
+              "\\|macro\\s-+\\)"
+              "\\([a-z]\\w*\\)\\>")
+     ,(if (spice-standard-p 'eldo) 3 2))))
 
 ;; ======================================================================
 ;; Support for compilation (simulation) - doesn't work 100% currently
@@ -8082,8 +8036,9 @@ returns it. Non-comment paragraphs can also be filled correctly."
   (set-spice-name)
   (spice-update-mode-menu)
   (set-syntax-table spice-mode-syntax-table)
-  (if (not (spice-output-p))
-      (setq imenu-generic-expression spice-imenu-generic-expression))
+  (unless (spice-output-p)
+    (setq imenu-generic-expression
+          (spice-make-imenu-generic-expression)))
   (when spice-imenu-add-to-menubar
     (imenu-add-to-menubar "Index"))
   ;; rebuild menu:
@@ -8099,41 +8054,6 @@ returns it. Non-comment paragraphs can also be filled correctly."
     (font-lock-mode)
     (font-lock-mode))
   )
-
-
-(defun spice-activate-customizations-obsolete ()
-  "Activate all customizations on local variables. Run this if you set 
-the spice-standard variable to modify spice-mode's behaviour in the local
-buffer. It sets up the buffer local variables using the modified global
-variables of the customization buffer."
-  (interactive)
-  (if (spice-output-p)
-      (use-local-map spice-output-mode-map)
-    (use-local-map spice-mode-map))
-  ;; (setq spice-standard-local spice-standard)
-  (set-spice-name)
-  (spice-menu-init)
-  (spice-update-mode-menu)
-  (spice-mode-syntax-table-init)
-  (set-syntax-table spice-mode-syntax-table)
-  (spice-keywords-init)
-  (spice-font-lock-init)
-  (spice-imenu-init)
-  (if (not (spice-output-p))
-      (setq imenu-generic-expression spice-imenu-generic-expression))
-  ;; add imenu to menubar ?
-  (when spice-imenu-add-to-menubar
-    (imenu-add-to-menubar "Index"))
-  (spice-compile-variables-init)
-  (spice-compile-init)
-  (spice-waveform-viewer-init)
-  (if (fboundp 'font-lock-unset-defaults)
-      (font-lock-unset-defaults))
-;;  (setq font-lock-defaults
-;;	(list 'spice-font-lock-keywords nil t (list (cons ?\" "w"))))
-  (font-lock-set-defaults)
-  (font-lock-fontify-buffer))
-
 
 ;; ======================================================================
 ;; spice-mode main entry point
@@ -8365,10 +8285,6 @@ Key bindings for other parts in the file:
   (unless (and spice-menu-list spice-output-menu-list)
     (spice-menu-init))
 
-  ;; global spice-imenu init (not output mode !)
-  (unless spice-imenu-generic-expression
-    (spice-imenu-init))
-
   ;; global vars for compile init
   (unless spice-compilation-error-regexp-alist
     (spice-compile-variables-init))
@@ -8439,7 +8355,7 @@ Key bindings for other parts in the file:
     (set (make-local-variable 'imenu-case-fold-search) t)
     ;; buffer local imenu init
     (set (make-local-variable 'imenu-generic-expression)
-	 spice-imenu-generic-expression)
+	 (spice-make-imenu-generic-expression))
     
     ;; add speedbar (global, can be moved ?)
     (spice-speedbar-init)

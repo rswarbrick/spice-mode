@@ -29,6 +29,7 @@ This is a manual for Emacs SPICE Mode, version 1.101
 * Introduction::                What is SPICE mode?
 * Installation::                How do I install it?
 
+* Flavours of SPICE::           What are you running?
 * New Files::                   Inserting boilerplate
 
 * Index::                       Index.
@@ -45,7 +46,7 @@ The code was originally written by Geert A. M. Van der Plas, Emmanuel
 Rouat and Carlin J. Vieri in the 1990s and has been tidied up a bit and
 given a manual and test-suite by Rupert Swarbrick, starting in 2012.
 
-@node Installation, New Files, Introduction, Top
+@node Installation, Flavours of SPICE, Introduction, Top
 @chapter Installation
 @cindex Installation
 @c
@@ -117,7 +118,20 @@ name of the installed @file{spice-mode.el}. After doing so, the
 @code{locate-library} test above should return a string ending in
 @code{"spice-mode.elc"}.
 
-@node New Files, Index, Installation, Top
+@node Flavours of SPICE, New Files, Installation, Top
+@chapter Flavours of SPICE
+@cindex SPICE standards
+@cindex implementations
+
+@cindex spice-standard
+There are many descendants of the original Berkeley SPICE, each of which
+has a slightly different syntax. In order to get syntax highlighting to
+exactly match the implementation you use, customise the
+@code{spice-standard} variable. Currently, SPICE mode supports the basic
+Berkeley SPICE syntax and then optionally: Hspice, Eldo, EldoRf,
+EldoVlogA, FastHenry, LAYLA, MONDRIAAN, DracCDL and Spectre.
+
+@node New Files, Index, Flavours of SPICE, Top
 @chapter New Files
 @cindex new files
 @cindex boilerplate, inserting

@@ -215,9 +215,12 @@ variable. This is set to @file{~/.spice-default} by default. If the
 named file exists, it is inserted verbatime (followed by a changelog
 entry).
 
+@cindex spice-default-header
 If the named template file doesn't exist, SPICE mode inserts some
 generic boilerplate which takes into account which of the SPICE
-standards is configured.
+standards is configured. If you are using this feature, you may wish to
+customise @code{spice-default-header}, which gets inserted near the top
+of the buffer.
 
 @node Advanced customisation, , New Files, Customisation
 @section Advanced customisation

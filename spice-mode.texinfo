@@ -1,0 +1,121 @@
+\input texinfo
+@setfilename spice-mode.info
+@settitle SPICE Mode Manual 1.101
+
+@copying
+This is a manual for the Emacs SPICE Mode, version 1.101.
+
+Copyright @copyright{} 2012 Rupert Swarbrick
+@end copying
+
+@titlepage
+@title SPICE Mode Manual
+@author Rupert Swarbrick
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top, Introduction, (dir), (dir)
+@top SPICE Mode manual
+
+This is a manual for Emacs SPICE Mode, version 1.101
+@end ifnottex
+
+@menu
+* Introduction::                What is SPICE mode?
+* Installation::                How do I install it?
+
+* Index::                       Index.
+@end menu
+
+@node Introduction, Installation, Top, Top
+@chapter Introduction
+@cindex Introduction
+@c
+This manual describes @file{spice-mode.el}, an elisp library that
+provides a major mode for editing SPICE netlists in Emacs.
+
+The code was originally written by Geert A. M. Van der Plas, Emmanuel
+Rouat and Carlin J. Vieri in the 1990s and has been tidied up a bit and
+given a manual and test-suite by Rupert Swarbrick, starting in 2012.
+
+@node Installation, Index, Introduction, Top
+@chapter Installation
+@cindex Installation
+@c
+To install spice-mode.el, there are three (simple!) things you need to
+do. You need to tell Emacs from where to load it, when to load it and
+how to load it. That is, you need to stick the code somewhere and tell
+Emacs about it; you need to tell Emacs to use the @code{spice-mode} mode
+for SPICE files and, finally, you need to tell Emacs that
+@code{spice-mode} lives in @file{spice-mode.el}.
+
+@cindex @code{load-path}, adding @file{spice-mode.el} to
+To make Emacs able to load it, the easiest approach is to put the
+@file{spice-mode} directory somewhere convenient (such as
+@file{~/.emacs.d} on a *nix system) and then add this directory to your
+Emacs load path. Assuming that the code is installed at
+@file{~/.emacs.d/spice-mode}, you then need to add the following line to
+your @file{~/.emacs} file:
+
+@example
+(add-to-list 'load-path "~/.emacs.d/spice-mode")
+@end example
+
+To check it works, evaluate the form by hitting @kbd{C-x C-e} after
+it. Don't load the library yet (otherwise checking for auto-loads needs
+you to restart Emacs), but you can check that Emacs can now find the
+file by typing @kbd{M-:} and then:
+
+@example
+(locate-library "spice-mode")
+@end example
+
+If you're reading this in Emacs, you can just hit @kbd{C-x C-e} after
+the code on the previous line instead. If all goes to plan, you should
+see something like @code{"/some/path/spice-mode.el"} in the message
+bar. If you see @code{nil}, Emacs couldn't find the file and you
+probably need to fix something.
+
+@cindex autoloads
+Now, let's tell Emacs to use @code{spice-mode} for spice files. Add
+something like the following to your @file{~/.emacs} file. If you use
+different file extensions, alter the list in the obvious way.
+
+@example
+(dolist (extension '("\\.sp$" "\\.cir$" "\\.ckt$" "\\.mod$"
+                     "\\.cdl$" "\\.chi$" "\\.inp$"))
+  (add-to-list 'auto-mode-alist (cons extension 'spice-mode)))
+@end example
+
+To try it out now, use @kbd{C-x C-e} as usual. The code is idempotent,
+so doing it twice won't break anything.
+
+The final job is to tell Emacs how to load @code{spice-mode}: by looking
+in @file{spice-mode.el}, of course! To do so, add
+
+@example
+(autoload 'spice-mode "spice-mode" "Spice editing mode" t)
+@end example
+
+to your @file{~/.emacs} and run it now by using @kbd{C-x C-e}. With a
+bit of luck, when you visit a SPICE file, Emacs will correctly use
+@file{spice-mode.el} to give it syntax highlighting and other
+goodness. Now read the rest of the manual to discover what the mode can
+do for you!
+
+One more thing: Although everything should now work, it won't load as
+quickly as it might. To improve load times, you should byte-compile the
+file. To do so, type @kbd{M-x byte-compile-file} and give it the file
+name of the installed @file{spice-mode.el}. After doing so, the
+@code{locate-library} test above should return a string ending in
+@code{"spice-mode.elc"}.
+
+@node Index,  , Installation, Top
+@unnumbered Index
+@printindex cp
+@bye

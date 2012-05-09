@@ -82,7 +82,6 @@
 (defvar spice-tempo-tags nil
   "List of templates used in spice mode.")
 
-
 ;; help function
 (defun spice-custom-set (variable value &rest functions)
   "Set variables as in `custom-set-default' and call FUNCTIONS (if
@@ -94,23 +93,19 @@ bound) afterwards."
     (when (fboundp (car functions)) (funcall (car functions)))
     (setq functions (cdr functions))))
 
-
 (defgroup spice nil
   "Customizations for Spice mode."
   :prefix "spice-"
   :link  '(url-link "http://spice-mode.4t.com/")
-  :group 'languages
-  )
+  :group 'languages)
 
 
-;;;###autoload
 (defcustom spice-mode-hook nil
   "*List of hook functions run by `spice-mode' (see `run-hooks')."
   :type 'hook
   :group 'spice)
 
 
-;;;###autoload
 (defcustom spice-standard '(spice2g6 (hspice eldo eldorf eldovloga fasthenry))
   "*Spice standards used.
 Basic standard:
@@ -149,7 +144,7 @@ Additional standards:
   :group 'spice)
 
 
-;;;###autoload
+
 (defcustom spice-imenu-add-to-menubar t
   "*Spice mode adds imenu (Index) item to menubar"
   :group 'spice
@@ -158,7 +153,7 @@ Additional standards:
 			   'spice-update-existing-buffers))
   :type 'boolean)
 
-;;;###autoload
+
 (defcustom spice-echo-intro t
   "*Spice mode echos introductory message on entry to spice-mode"
   :group 'spice
@@ -168,26 +163,22 @@ Additional standards:
   "Customizations for initialization of empty/new spice files."
   :group 'spice)
 
-;;;###autoload
 (defcustom spice-initialize-empty-file nil
   "*Spice initialize empty/new file setting"
   :group 'spice-initialize-file
   :type  'boolean)
 
-;;;###autoload
 (defcustom spice-initialize-template-file "~/.spice-default"
   "*File containing the default header that is inserted when opening
 an empty file (ie. a new file), see also `spice-initialize-empty-file'"
   :group 'spice-initialize-file
   :type  'file)
 
-;;;###autoload
 (defcustom spice-default-header nil
   "*Default header for new Spice netlists, see also `spice-initialize-empty-file'"
   :group 'spice-initialize-file
   :type  'string)
 
-;;;###autoload
 (defcustom spice-initialize-file-function 'spice-initialize-empty-file
   "*Optional initialize function for empty/new files, see also
 `spice-initialize-empty-file'. If a different function is specified it
@@ -278,7 +269,6 @@ to 0 and fill out the \"File Message\" entries.
   :group 'spice-simulate)
 
 
-;;;###autoload
 (defcustom spice-simulator nil ; example: "Hspice"
   "*Spice command, used when compiling buffer with `compile-mode',
 see also `spice-simulator-switches'."
@@ -286,7 +276,6 @@ see also `spice-simulator-switches'."
   :type  'string)
 
 
-;;;###autoload
 (defcustom spice-simulator-switches "" ; example "-noconf"
   "*Spice command switches, used when compiling buffer with `compile-mode',
 see also `spice-simulator'."
@@ -333,7 +322,6 @@ waveform viewer command.
   :group 'spice-simulate)
 
 
-;;;###autoload
 (defcustom spice-waveform-viewer nil ; example: "Nutmeg"
   "*Spice command, used when starting waveform viewer,
 see also `spice-waveform-viewer-switches'."
@@ -341,7 +329,6 @@ see also `spice-waveform-viewer-switches'."
   :type  'string)
 
 
-;;;###autoload
 (defcustom spice-waveform-viewer-switches "" ; example "-b"
   "*Spice waveform viewer command switches,
 see also `spice-waveform-viewer'."
@@ -353,7 +340,6 @@ see also `spice-waveform-viewer'."
   "Customizations for commands."
   :group 'spice)
 
-;;;###autoload
 (defcustom spice-shell
   (if (memq system-type '(ms-dos emx windows-nt))
       shell-file-name
@@ -362,7 +348,6 @@ see also `spice-waveform-viewer'."
   :group 'spice-commands
   :type 'file)
 
-;;;###autoload
 (defcustom spice-shell-command-option
   (cond ((memq system-type '(ms-dos emx windows-nt) )
 	 (cond ((boundp 'shell-command-option)
@@ -382,7 +367,6 @@ see also `spice-waveform-viewer'."
   "Customizations for hiding of comments."
   :group 'spice)
 
-;;;###autoload
 (custom-declare-variable 'spice-hide-line-prefix 
 			 '(concat 
 			   (regexp-quote 
@@ -403,7 +387,6 @@ and `comment-padding' variables."
   :group 'spice-hide
   :type 'string)
 
-;;;###autoload
 (defcustom spice-auto-hide-comments nil
   "*Boolean indicating automatic hiding of all commented regions at load time."
   :group 'spice-hide
@@ -416,7 +399,6 @@ and `comment-padding' variables."
 
 ;; sections (entirely different implementation but sections idea has
 ;; been taken from eldo-mode.el)
-;;;###autoload
 (defcustom spice-section-alist
   '(
     ;; Libraries
@@ -466,7 +448,6 @@ Section:
   "Customizations for highlighting."
   :group 'spice)
 
-;;;###autoload
 (defcustom spice-highlight-keywords t
   "*Non-nil means highlight SPICE keywords and other standardized words.
 The following faces are used:
@@ -511,7 +492,6 @@ NOTE: Activate the new setting in a spice buffer by re-fontifying it (menu
   "Customizations for spice output file handling."
   :group 'spice)
 
-;;;###autoload
 (defcustom spice-output-filename-alist
   '(
     ;; Libraries
@@ -8022,7 +8002,6 @@ returns it. Non-comment paragraphs can also be filled correctly."
 ;; ======================================================================
 ;; spice-mode main entry point
 ;; ======================================================================
-;;;###autoload
 (defun spice-mode ()
   "Major mode for editing spice decks in (X)Emacs.
 

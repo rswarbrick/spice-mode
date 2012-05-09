@@ -143,20 +143,12 @@ Additional standards:
 			   'spice-update-existing-buffers))
   :group 'spice)
 
-
-
 (defcustom spice-imenu-add-to-menubar t
   "*Spice mode adds imenu (Index) item to menubar"
   :group 'spice
   :set (lambda (variable value)
          (spice-custom-set variable value
 			   'spice-update-existing-buffers))
-  :type 'boolean)
-
-
-(defcustom spice-echo-intro t
-  "*Spice mode echos introductory message on entry to spice-mode"
-  :group 'spice
   :type 'boolean)
 
 (defgroup spice-initialize-file nil
@@ -8349,9 +8341,6 @@ Key bindings for other parts in the file:
        msb-mode ;; is it on ?
        (not spice-msb-fixed) ;; haven't yet added spice decks category ?
        (spice-msb-fix)) ;; add category
-
-  (when spice-echo-intro
-    (message "Spice mode %s." spice-version))
 
   ;; run spice-mode hooks
   (run-hooks 'spice-mode-hook))

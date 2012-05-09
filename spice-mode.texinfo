@@ -29,6 +29,8 @@ This is a manual for Emacs SPICE Mode, version 1.101
 * Introduction::                What is SPICE mode?
 * Installation::                How do I install it?
 
+* New Files::                   Inserting boilerplate
+
 * Index::                       Index.
 @end menu
 
@@ -43,7 +45,7 @@ The code was originally written by Geert A. M. Van der Plas, Emmanuel
 Rouat and Carlin J. Vieri in the 1990s and has been tidied up a bit and
 given a manual and test-suite by Rupert Swarbrick, starting in 2012.
 
-@node Installation, Index, Introduction, Top
+@node Installation, New Files, Introduction, Top
 @chapter Installation
 @cindex Installation
 @c
@@ -115,7 +117,30 @@ name of the installed @file{spice-mode.el}. After doing so, the
 @code{locate-library} test above should return a string ending in
 @code{"spice-mode.elc"}.
 
-@node Index,  , Installation, Top
+@node New Files, Index, Installation, Top
+@chapter New Files
+@cindex new files
+@cindex boilerplate, inserting
+@cindex automatically inserting boilerplate
+
+@cindex spice-initialize-empty-file
+SPICE mode can be configured so that when you open a new file (well,
+create an empty buffer), it automatically inserts tedious boilerplate
+text for you. The master control for this is the
+@code{spice-initialize-empty-file} variable. If this variable is true
+then text is automatically added to the file.
+
+@cindex spice-initialize-template-file
+Firstly, SPICE mode looks at the @code{spice-initialize-template-file}
+variable. This is set to @file{~/.spice-default} by default. If the
+named file exists, it is inserted verbatime (followed by a changelog
+entry).
+
+If the named template file doesn't exist, SPICE mode inserts some
+generic boilerplate which takes into account which of the SPICE
+standards is configured.
+
+@node Index,  , New Files, Top
 @unnumbered Index
 @printindex cp
 @bye

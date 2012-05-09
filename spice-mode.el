@@ -7267,14 +7267,14 @@ command."
 (defun spice-initialize-empty-file ()
   "Create a standard template for a new/empty file. 
 
-This is the default initialization function. If the user has specified
-an initialization function, by setting
+This is the default initialization function. If the user has
+specified an initialization function, by setting
 `spice-initialize-file-function', the user-specified function is
 called instead. This function first checks for the template file
-specified in `spice-initialization-file' which is inserted and a default
-changelog entry is added. If this file isn't readable, a default
-template is inserted depending on the submode (eldo, hspice or layla)
-that has been selected."
+specified in `spice-initialization-file' which is inserted and a
+default changelog entry is added. If this file isn't readable, a
+default template is inserted depending on the submode (eldo,
+hspice or layla) that has been selected."
   (interactive "*") ; read-only check
 
   (cond

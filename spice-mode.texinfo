@@ -221,6 +221,12 @@ standards is configured. If you are using this feature, you may wish to
 customise @code{spice-default-header}, which gets inserted near the top
 of the buffer.
 
+@cindex spice-initialize-file-function
+If you're feeling really adventurous, you can override all the default
+initialisation functionality by setting
+@code{spice-initialize-file-function} to a function of your choice. This
+will be called with the empty buffer and should insert boilerplate code.
+
 @node Advanced customisation, , New Files, Customisation
 @section Advanced customisation
 @cindex advanced customisation

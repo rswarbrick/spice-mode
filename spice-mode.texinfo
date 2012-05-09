@@ -52,32 +52,12 @@ Customisation
 @end detailmenu
 @end menu
 
-@comment *************************************************************
-@comment Top-level chapters
-
 @node Getting Started, Using SPICE mode, Top, Top
 @chapter Getting Started
 @menu
 * Introduction::                What is SPICE mode?
 * Installation::                How do I install it?
 @end menu
-
-@node Using SPICE mode, Customisation, Getting Started, Top
-@chapter Using SPICE mode
-@menu
-* File structure::              Using SPICE mode to navigate
-@end menu
-
-@node Customisation, Index, Using SPICE mode, Top
-@chapter Customisation
-@menu
-* Flavours of SPICE::           What are you running?
-* New Files::                   Inserting boilerplate
-* Advanced customisation::      Customising SPICE mode with your elisp-fu
-@end menu
-
-@comment *************************************************************
-@comment The actual contents of the document
 
 @node Introduction, Installation, Getting Started, Getting Started
 @section Introduction
@@ -170,6 +150,12 @@ name of the installed @file{spice-mode.el}. After doing so, the
 @code{locate-library} test above should return a string ending in
 @code{"spice-mode.elc"}.
 
+@node Using SPICE mode, Customisation, Getting Started, Top
+@chapter Using SPICE mode
+@menu
+* File structure::              Using SPICE mode to navigate
+@end menu
+
 @node File structure, , Using SPICE mode, Using SPICE mode
 @section File structure
 @cindex imenu
@@ -187,6 +173,14 @@ following the prompts. Of course, that's not particularly convenient to
 use. As such, if @code{spice-imenu-add-to-menubar} is true then an extra
 menu is added to the menu called @code{Index}, which you can use to find
 things.
+
+@node Customisation, Index, Using SPICE mode, Top
+@chapter Customisation
+@menu
+* Flavours of SPICE::           What are you running?
+* New Files::                   Inserting boilerplate
+* Advanced customisation::      Customising SPICE mode with your elisp-fu
+@end menu
 
 @node Flavours of SPICE, New Files, Customisation, Customisation
 @section Flavours of SPICE

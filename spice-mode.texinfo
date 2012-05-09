@@ -19,26 +19,60 @@ Copyright @copyright{} 2012 Rupert Swarbrick
 @contents
 
 @ifnottex
-@node Top, Introduction, (dir), (dir)
+@node Top, Getting Started, (dir), (dir)
 @top SPICE Mode manual
 
 This is a manual for Emacs SPICE Mode, version 1.101
 @end ifnottex
 
 @menu
+* Getting Started::             How (and why) to get started with SPICE mode
+* Using SPICE mode::            How @file{spice-mode.el} helps you write SPICE decks.
+* Customisation::               Making your stay more comfortable.
+* Index::                       Index.
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+Getting Started
+
 * Introduction::                What is SPICE mode?
 * Installation::                How do I install it?
 
+Customisation
+
 * Flavours of SPICE::           What are you running?
 * New Files::                   Inserting boilerplate
-
 * Advanced customisation::      Customising SPICE mode with your elisp-fu
 
-* Index::                       Index.
-
+@end detailmenu
 @end menu
 
-@node Introduction, Installation, Top, Top
+@comment *************************************************************
+@comment Top-level chapters
+
+@node Getting Started, Using SPICE mode, Top, Top
+@menu
+* Introduction::                What is SPICE mode?
+* Installation::                How do I install it?
+@end menu
+
+@node Using SPICE mode, Customisation, Getting Started, Top
+
+How to use it?
+
+
+@node Customisation, Index, Using SPICE mode, Top
+@menu
+* Flavours of SPICE::           What are you running?
+* New Files::                   Inserting boilerplate
+* Advanced customisation::      Customising SPICE mode with your elisp-fu
+@end menu
+
+@comment *************************************************************
+@comment The actual contents of the document
+
+@node Introduction, Installation, Getting Started, Getting Started
 @chapter Introduction
 @cindex Introduction
 @c
@@ -52,7 +86,7 @@ particular, Rupert (who finds writing about himself in the third person
 rather strange) is British. As such, there's a weird mix of British and
 American spelling in the manual. Sorry.
 
-@node Installation, Flavours of SPICE, Introduction, Top
+@node Installation, , Introduction, Getting Started
 @chapter Installation
 @cindex Installation
 @c
@@ -124,7 +158,7 @@ name of the installed @file{spice-mode.el}. After doing so, the
 @code{locate-library} test above should return a string ending in
 @code{"spice-mode.elc"}.
 
-@node Flavours of SPICE, New Files, Installation, Top
+@node Flavours of SPICE, New Files, Customisation, Customisation
 @chapter Flavours of SPICE
 @cindex SPICE standards
 @cindex implementations
@@ -137,7 +171,7 @@ exactly match the implementation you use, customise the
 Berkeley SPICE syntax and then optionally: Hspice, Eldo, EldoRf,
 EldoVlogA, FastHenry, LAYLA, MONDRIAAN, DracCDL and Spectre.
 
-@node New Files, Advanced customisation, Flavours of SPICE, Top
+@node New Files, Advanced customisation, Flavours of SPICE, Customisation
 @chapter New Files
 @cindex new files
 @cindex boilerplate, inserting
@@ -160,7 +194,7 @@ If the named template file doesn't exist, SPICE mode inserts some
 generic boilerplate which takes into account which of the SPICE
 standards is configured.
 
-@node Advanced customisation, Index, New Files, Top
+@node Advanced customisation, , New Files, Customisation
 @chapter Advanced customisation
 @cindex advanced customisation
 
@@ -174,7 +208,7 @@ a list of functions to be run when @code{spice-mode} starts.
 @xref{Hooks, , Hooks, Elisp, The Emacs Lisp Manual}, for
 more information about hook variables.
 
-@node Index,  , Advanced customisation, Top
+@node Index,  , Customisation, Top
 @unnumbered Index
 @printindex cp
 @bye

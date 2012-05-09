@@ -32,7 +32,10 @@ This is a manual for Emacs SPICE Mode, version 1.101
 * Flavours of SPICE::           What are you running?
 * New Files::                   Inserting boilerplate
 
+* Advanced customisation::      Customising SPICE mode with your elisp-fu
+
 * Index::                       Index.
+
 @end menu
 
 @node Introduction, Installation, Top, Top
@@ -44,7 +47,10 @@ provides a major mode for editing SPICE netlists in Emacs.
 
 The code was originally written by Geert A. M. Van der Plas, Emmanuel
 Rouat and Carlin J. Vieri in the 1990s and has been tidied up a bit and
-given a manual and test-suite by Rupert Swarbrick, starting in 2012.
+given a manual and test-suite by Rupert Swarbrick, starting in 2012. In
+particular, Rupert (who finds writing about himself in the third person
+rather strange) is British. As such, there's a weird mix of British and
+American spelling in the manual. Sorry.
 
 @node Installation, Flavours of SPICE, Introduction, Top
 @chapter Installation
@@ -131,7 +137,7 @@ exactly match the implementation you use, customise the
 Berkeley SPICE syntax and then optionally: Hspice, Eldo, EldoRf,
 EldoVlogA, FastHenry, LAYLA, MONDRIAAN, DracCDL and Spectre.
 
-@node New Files, Index, Flavours of SPICE, Top
+@node New Files, Advanced customisation, Flavours of SPICE, Top
 @chapter New Files
 @cindex new files
 @cindex boilerplate, inserting
@@ -154,7 +160,21 @@ If the named template file doesn't exist, SPICE mode inserts some
 generic boilerplate which takes into account which of the SPICE
 standards is configured.
 
-@node Index,  , New Files, Top
+@node Advanced customisation, Index, New Files, Top
+@chapter Advanced customisation
+@cindex advanced customisation
+
+@cindex mode hooks
+@cindex spice-mode-hook
+If you know some Emacs Lisp, you'll no doubt be itching to make more
+dramatic customisations to your local copy of SPICE mode. The most
+obvious place to start with most Emacs major modes is their mode hooks
+and SPICE mode has one, called @code{spice-mode-hook}. It should contain
+a list of functions to be run when @code{spice-mode} starts.
+@xref{Hooks, , Hooks, Elisp, The Emacs Lisp Manual}, for
+more information about hook variables.
+
+@node Index,  , Advanced customisation, Top
 @unnumbered Index
 @printindex cp
 @bye

@@ -7276,78 +7276,74 @@ changelog entry is added. If this file isn't readable, a default
 template is inserted depending on the submode (eldo, hspice or layla)
 that has been selected."
   (interactive "*") ; read-only check
-  (if (file-readable-p spice-initialize-template-file) ;; template file
-      (insert-file-contents spice-initialize-template-file)
-    ;; this has been taken from eldo-mode and thus only applies if
-    ;; eldo is selected
-    (if (spice-standard-p 'eldo) 
-	(progn
-	  (insert   
-	   (concat "# " (buffer-name) " "
-		   "\n.notrc\n.nocom"   
-		   "\n\n"   
-		   spice-default-header
-		   "\n\n"))
-	  (spice-add-section "LIBRARIES")
-	  (insert "\n\n\n")
-	  (spice-add-section "SIMULATION OPTIONS")
-	  (insert   
-	   (concat "\n\n"
-		   ".options STAT=1 SIMUDIV=10 !Status reports\n"   
-		   ".options noascii nomod    \n"   
-		   ".options eps=1e-7 itol=1e-6 gmin=1e-16 analog \n"   
-		   ".options nobound_phase"   
-		   ".width out=80 \n"   
-		   ".temp=27 \n"   
-		   "\n\n\n"))
-	  (spice-add-section "SUPPLIES/REFERENCES")
-	  (insert  "\n\n.END\n\n\n\n")
-	  (spice-add-section "Changelog")
-	  (insert "\n\n*** Local Variables:\n*** mode:spice\n*** End:\n")
-	  )
-      (if (spice-standard-p 'hspice) ;; hspice specific options
-	  (progn
-	    (insert   
-	     (concat "* " (buffer-name) " "
-		     "\n\n"   
-		     spice-default-header
-		     "\n\n"))
-	    (spice-add-section "LIBRARIES")
-	    (insert "\n\n\n")
-	    (spice-add-section "SIMULATION OPTIONS")
-	    (insert   
-	     (concat "\n\n"
-		     ".options nomod nopage opts \n"   
-		     ".options itl1=5000 itl2=2500 itl3=20 itl4=20 itl5=0 \n"
-		     ".options numdgt=10 $ print 10 digits in output \n"   
-		     ".width out=80 \n"   
-		     ".temp=27 \n"   
-		     "\n\n\n"))
-	    (spice-add-section "SUPPLIES/REFERENCES")
-	    (insert  "\n\n.end\n\n\n\n")
-	    (spice-add-section "Changelog")
-	    (insert "\n\n*** Local Variables:\n*** mode:spice\n*** End:\n")
-	    )
-	(if (spice-standard-p 'layla) ;; layla specific options
-	    (progn
-	      (insert   
-	       (concat "* " (buffer-name) " "
-		       "\n"
-		       spice-default-header
-		       "\n\n"))
-	      (spice-add-section "MAIN CIRCUIT")
-	      (insert  "\n\n\n")
-	      (spice-add-section "PORTS")
-	      (insert  "\n\n.end\n\n\n\n")
-	      (spice-add-section "Changelog")
-	      (insert "\n\n*** Local Variables:\n*** mode:spice\n*** End:\n")
-	      )
-	  )
-	)
-      )
-    )
-  (spice-add-changelog-entry "File created") ; in any case
-  )
+
+  (cond
+   ;; Use a template file
+   ((and (stringp spice-initialize-template-file)
+         (file-readable-p spice-initialize-template-file))
+    (insert-file-contents spice-initialize-template-file))
+
+   ((spice-standard-p 'eldo)
+    (insert   
+     (concat "# " (buffer-name) " "
+             "\n.notrc\n.nocom"   
+             "\n\n"   
+             spice-default-header
+             "\n\n"))
+    (spice-add-section "LIBRARIES")
+    (insert "\n\n\n")
+    (spice-add-section "SIMULATION OPTIONS")
+    (insert   
+     (concat "\n\n"
+             ".options STAT=1 SIMUDIV=10 !Status reports\n"   
+             ".options noascii nomod    \n"   
+             ".options eps=1e-7 itol=1e-6 gmin=1e-16 analog \n"   
+             ".options nobound_phase"   
+             ".width out=80 \n"   
+             ".temp=27 \n"   
+             "\n\n\n"))
+    (spice-add-section "SUPPLIES/REFERENCES")
+    (insert  "\n\n.END\n\n\n\n")
+    (spice-add-section "Changelog")
+    (insert "\n\n*** Local Variables:\n*** mode:spice\n*** End:\n"))
+
+   ((spice-standard-p 'hspice)
+    (insert   
+     (concat "* " (buffer-name) " "
+             "\n\n"   
+             spice-default-header
+             "\n\n"))
+    (spice-add-section "LIBRARIES")
+    (insert "\n\n\n")
+    (spice-add-section "SIMULATION OPTIONS")
+    (insert   
+     (concat "\n\n"
+             ".options nomod nopage opts \n"   
+             ".options itl1=5000 itl2=2500 itl3=20 itl4=20 itl5=0 \n"
+             ".options numdgt=10 $ print 10 digits in output \n"   
+             ".width out=80 \n"   
+             ".temp=27 \n"   
+             "\n\n\n"))
+    (spice-add-section "SUPPLIES/REFERENCES")
+    (insert  "\n\n.end\n\n\n\n")
+    (spice-add-section "Changelog")
+    (insert "\n\n*** Local Variables:\n*** mode:spice\n*** End:\n"))
+
+   ((spice-standard-p 'layla)
+    (insert   
+     (concat "* " (buffer-name) " "
+             "\n"
+             spice-default-header
+             "\n\n"))
+    (spice-add-section "MAIN CIRCUIT")
+    (insert  "\n\n\n")
+    (spice-add-section "PORTS")
+    (insert  "\n\n.end\n\n\n\n")
+    (spice-add-section "Changelog")
+    (insert "\n\n*** Local Variables:\n*** mode:spice\n*** End:\n")))
+
+  ; In any case, add a changelog entry.
+  (spice-add-changelog-entry "File created"))
 
 ;; ======================================================================
 ;; Support for .subckt search !?

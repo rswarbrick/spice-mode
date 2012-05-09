@@ -2,26 +2,28 @@
 ;;; $Id: spice-mode.el,v 1.100 2007/01/03 16:46:46 vdplasg Exp $
 
 ;; Emacs Lisp Archive Entry
-;; Author: Geert A. M. Van der Plas <geert_vanderplas@email.com> 1999-
+;; Author: Rupert Swarbrick <rswarbrick@gmail.com> 2012-
+;;         Geert A. M. Van der Plas <geert_vanderplas@email.com> 1999-
 ;;         Emmanuel Rouat <emmanuel.rouat@wanadoo.fr> 1997-
 ;;         Carlin J. Vieri, MIT AI Lab <cvieri@ai.mit.edu> 1994 
 ;; Keywords: spice, spice2g6, spice3, eldo, hspice, layla, mondriaan,
 ;;           fasthenry, CDL, spectre compatibility, netlist editing
 ;; Filename: spice-mode.el
-;; Version: 1.2.25
+;; Version: 1.3.0
 ;; Maintainer: Geert A. M. Van der Plas <geert_vanderplas@email.com>
-;; Last-Updated: 01 November 2004
+;; Last-Updated: 9 May 2012
 ;; Description: spice file editing
-;; URL: http://spice-mode.4t.com/
-;; old-URL: http://www.esat.kuleuven.ac.be/~vdplas/emacs/
-;; Compatibility: Emacs2[01], (partly tested)XEmacs21
+;; URL: http://www.github.com/rswarbrick/spice-mode
+;; old-URL: http://spice-mode.4t.com/
+;; Compatibility: Emacs21+
 
 ;; Please send suggestions and bug reports to
-;; mailto:Geert_VanderPlas@email.com
+;; mailto:rswarbrick@gmail.com
 
 ;; Copyright (C) 1994, MIT Artificial Intelligence Lab
 ;; Copyright (C) 1997- Emmanuel Rouat
 ;; Copyright (C) 1999- Geert A. M. Van der Plas
+;; Copyright (C) 2012- Rupert Swarbrick
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -37,49 +39,11 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;; INSTALL:
-;; ========
-;;
-;; See the manual distributed with this file.
-
-;; CUSTOMIZATION:
+;; DOCUMENTATION:
 ;; ==============
-
-;; use customization to modify the behaviour of spice-mode; add 
-;; custom-set-variables to your `.emacs' file, for example:
-;; (custom-set-variables 
-;; ; '(spice-initialize-file-function (quote geert-spice-file-header)) ;; use geert-spice-file-header function (not included in this file !)
-;;  '(spice-initialize-empty-file t)         ;; initialize empty/new spice file
-;; ; '(spice-standard '(spice2g6 (hspice eldo eldorf eldovloga layla))) ;; all 4 modes
-;;  '(spice-standard (quote (spice2g6 (hspice eldo))))    ;; hspice and eldo
-;;  '(spice-standard (quote (spice2g6 ())))               ;; spice2g6/3 only
-;;  '(spice-simulator "Spice3")                           ;; default simulator
-;;  '(spice-waveform-viewer "Nutmeg")                     ;; default waveform 
-;;  '(spice-highlight-keywords nil)                       ;; less highlighting
-;;  '(spice-section-alist                                 ;; add own sections
-;;    ;; this is ugly, I know ;)
-;;    (append (nth 1 (nth 0 (get 'spice-section-alist 'standard-value)))
-;; 	      (list 
-;; 	       (list "My Header"    "MY HEADER"    nil)
-;; 	       )))
-;;  )
-
-;; This can also be achieved interactively through customizations !
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Commentary:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; The original spice-mode.el created by C. Vieri has been modified
-;; extensively. These changes have been heavily influenced by the eldo-mode.el
-;; of Emmanuel Rouat (the tempo-templates for one) and the vhdl-mode.el of
-;; Reto Zimmermann and Rodney J. Whitby (the font-locking, the
-;; customization, the menus, ...) Help in understanding 'advanced' lisp 
-;; was provided by G. Debyser <geert.debyser@advalvas.be>, our (common) lisp
-;; expert. Since version 0.97 a lot of input/ideas have been provided by
-;; Emmanuel Rouat. Just take a look and search for eldo-mode ;)
-
-;; This package provides an Emacs major mode for editing SPICE decks.
+;;
+;; This package provides an Emacs major mode for editing SPICE decks.  See the
+;; manual distributed with this file for more information.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; TODO:

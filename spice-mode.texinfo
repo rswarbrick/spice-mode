@@ -1,9 +1,9 @@
 \input texinfo
 @setfilename spice-mode.info
-@settitle SPICE Mode Manual 1.101
+@settitle SPICE Mode Manual 1.3.0
 
 @copying
-This is a manual for the Emacs SPICE Mode, version 1.101.
+This is a manual for the Emacs SPICE Mode, version 1.3.0
 
 Copyright @copyright{} 2012 Rupert Swarbrick
 @end copying
@@ -22,7 +22,7 @@ Copyright @copyright{} 2012 Rupert Swarbrick
 @node Top, Getting Started, (dir), (dir)
 @top SPICE Mode manual
 
-This is a manual for Emacs SPICE Mode, version 1.101
+This is a manual for Emacs SPICE Mode, version 1.3.0
 @end ifnottex
 
 @menu
@@ -86,12 +86,17 @@ Customisation
 This manual describes @file{spice-mode.el}, an elisp library that
 provides a major mode for editing SPICE netlists in Emacs.
 
-The code was originally written by Geert A. M. Van der Plas, Emmanuel
-Rouat and Carlin J. Vieri in the 1990s and has been tidied up a bit and
-given a manual and test-suite by Rupert Swarbrick, starting in 2012. In
-particular, Rupert (who finds writing about himself in the third person
-rather strange) is British. As such, there's a weird mix of British and
-American spelling in the manual. Sorry.
+The library dates back to one written by Carlin J. Vieri in the
+1990s. It was heavily modified by Geert A. M. Van der Plas and Emmanuel
+Rouat, influenced by the eldo-mode.el of Emmanuel Rouat (the
+tempo-templates for one) and the vhdl-mode.el of Reto Zimmermann and
+Rodney J. Whitby (including font-locking, customization and menus).
+
+More recently, the code has been tidied up a bit and given a manual and
+test-suite by Rupert Swarbrick, starting in 2012. In particular, Rupert
+(who finds writing about himself in the third person rather strange) is
+British. As such, there's a weird mix of British and American spelling
+in the manual. Sorry.
 
 @node Installation, , Introduction, Getting Started
 @section Installation

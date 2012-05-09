@@ -20,6 +20,13 @@ spice-test.cir."
            ,@body)
        (kill-buffer buffer))))
 
+(defun ensure-buffer-contains (string error-msg &rest args)
+  "Check that the current buffer contains the given string."
+  (save-excursion
+    (goto-char (point-min))
+    (unless (search-forward string nil t)
+      (apply #'error error-msg args))))
+
 (defun test-spice-load-funcs ()
   "Test things that are supposed to happen when loading any old
 spice file (such as init hooks etc)."
@@ -32,9 +39,9 @@ spice file (such as init hooks etc)."
 
 (defun test-spice-initialize-file ()
   "Test `spice-initialize-empty-file'."
-  (let ((spice-initialize-empty-file t))
+  (let ((spice-initialize-empty-file t)
+        (spice-initialize-template-file (spice-test-file-name)))
     (with-temp-buffer
       (spice-mode)
-      (goto-char (point-min))
-      (unless (search-forward "*** mode:spice" nil t)
-        (error "spice-initialize-empty-file failed.")))))
+      (ensure-buffer-contains "* Spice test file"
+                              "spice-initialize-empty-file failed."))))

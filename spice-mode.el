@@ -8407,13 +8407,11 @@ Key bindings for other parts in the file:
        (not spice-msb-fixed) ;; haven't yet added spice decks category ?
        (spice-msb-fix)) ;; add category
 
-  (if spice-echo-intro
-      (message "Spice mode %s.  Type C-h m for documentation."
-               spice-version))
+  (when spice-echo-intro
+    (message "Spice mode %s." spice-version))
 
   ;; run spice-mode hooks
-  (run-hooks 'spice-mode-hook)
-)
+  (run-hooks 'spice-mode-hook))
 
 
 ;; this is sometimes useful

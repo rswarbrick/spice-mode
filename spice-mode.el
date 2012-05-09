@@ -5,7 +5,8 @@
 ;; Author: Geert A. M. Van der Plas <geert_vanderplas@email.com> 1999-
 ;;         Emmanuel Rouat <emmanuel.rouat@wanadoo.fr> 1997-
 ;;         Carlin J. Vieri, MIT AI Lab <cvieri@ai.mit.edu> 1994 
-;; Keywords: spice, spice2g6, spice3, eldo, hspice, layla, mondriaan, fasthenry, CDL, spectre compatibility, netlist editing
+;; Keywords: spice, spice2g6, spice3, eldo, hspice, layla, mondriaan,
+;;           fasthenry, CDL, spectre compatibility, netlist editing
 ;; Filename: spice-mode.el
 ;; Version: 1.2.25
 ;; Maintainer: Geert A. M. Van der Plas <geert_vanderplas@email.com>
@@ -38,44 +39,8 @@
 
 ;; INSTALL:
 ;; ========
-
-;; byte compile spice-mode.el to spice-mode.elc (see `byte-compile-file')
-;; put these two files in an arbitrary, but accesible directory
-;; for example: $HOME/emacs, /usr/lib/emacs/site-lisp/ or 
-;; /usr/local/lib/emacs/site-lisp/
-
-;; If you chose a non-standard place to put the files add the following
-;; line to your Emacs start-up file (`.emacs') or custom `site-start.el'
-;; file (replace <directory-name> by the directory where you placed 
-;; spice-mode.el and spice-mode.elc):
-;; (setq load-path (cons (expand-file-name "<directory-name>") load-path))
-
-;; To use spice-mode, add either the following to your `.emacs' file. This
-;; assumes that you will use the .sp, .cir, .ckt, .mod, ... extensions for 
-;; your spice source decks and output files:
-;; (autoload 'spice-mode "spice-mode" "Spice/Layla Editing Mode" t)
-;; (setq auto-mode-alist (append (list (cons "\\.sp$" 'spice-mode)
-;; 				       (cons "\\.cir$" 'spice-mode)
-;; 				       (cons "\\.ckt$" 'spice-mode)
-;; 				       (cons "\\.mod$" 'spice-mode)
-;; 				       (cons "\\.cdl$" 'spice-mode)
-;; 				       (cons "\\.chi$" 'spice-mode) ;eldo outpt
-;; 				       (cons "\\.inp$" 'spice-mode))
-;; 				 auto-mode-alist))
-
-;; Other way to load spice mode (by Andrew Scott):
-;; ;;; Testing for spice-mode (Another spice mode, also works on Spice,
-;; ;;; Eldo, Layla; this one works on GNU Emacs-20.6 issues).
-;; (autoload 'spice-mode "spice-mode" "Spice/Layla Editing Mode" t)
-;; (add-to-list 'auto-mode-alist '("\\.cir$"          . spice-mode))
-;; (add-to-list 'auto-mode-alist '("\\.ckt$"          . spice-mode))
-;; (add-to-list 'auto-mode-alist '("\\.inp$"          . spice-mode))
-;; (add-to-list 'auto-mode-alist '("\\.spout$"        . spice-mode));hspice out
-;; (add-to-list 'auto-mode-alist '("\\.pdir$"         . spice-mode))
-;; ;;; Intel formats
-;; (add-to-list 'auto-mode-alist '("\\.[sS][pP]$"     . spice-mode))
-;; (add-to-list 'auto-mode-alist '("\\.[sm]?t0$"      . spice-mode))
-;; (add-to-list 'auto-mode-alist '("\\.[h]?spice$"    . spice-mode))
+;;
+;; See the manual distributed with this file.
 
 ;; CUSTOMIZATION:
 ;; ==============

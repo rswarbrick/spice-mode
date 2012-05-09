@@ -73,7 +73,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defconst spice-version "1.2.x (2012)"
+(defconst spice-version "1.3.x (2012)"
   "Current version of spice mode (spice2g6/spice3/hspice/eldo(rf&verilog-a)/fasthenry/layla/mondriaan/draccdl/spectre).")
 
 (defvar spice-running-xemacs (string-match "XEmacs" emacs-version)
